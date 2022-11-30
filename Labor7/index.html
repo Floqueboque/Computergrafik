@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <title>Labor 7</title>
+
+        <script id="vertex-shader" type="x-shader/x-vertex">#version 300 es
+            in vec4 aVertexPosition;
+            in vec4 aVertexColor;
+            in vec2 aTextureCoord;
+
+            uniform mat4 uModelViewMatrix;
+            uniform mat4 uProjectionMatrix;
+
+            out lowp vec4 vColor;
+            out highp vec2 vTextureCoord;
+
+            void main() {
+                gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+                vColor = aVertexColor;
+                vTextureCoord = aTextureCoord;
+            }
+        </script>
+
+        <script id="fragment-shader" type="x-shader/x-vertex">#version 300 es
+            precision highp float;
+            in vec4 vColor;
+            in vec2 vTextureCoord;
+            out vec4 fragColor;
+            uniform sampler2D uTexture;
+
+            void main() {
+                fragColor = texture(uTexture, vTextureCoord) * vColor;
+            }
+        </script>
+        <style>
+            .div1 {
+                    float: left;
+                    width: 50%;
+                    display: block;
+                    text-align: center;
+                }
+
+                .div2 {
+                    display: block;
+                    text-align: center;
+                }
+
+                #methode{
+                    display: block;
+                    margin-top: 2%;
+                    margin-left: 50%;
+                    text-align: center;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="div1">
+            <h1>3D-Grafik: Hintergrundbild und Kubus mit Textur</h1>
+            <canvas id="myCanvas3D" style="background: url(bg.jpg);" width="640" height="480"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3/gl-matrix.js "></script>
+            <script src="main.js"></script>
+        </div>
+        <div class="div2">
+            <h1>Dokumentation (Workload ca. 6 h)</h1>
+            <h2>Programmablauf</h2>
+            <img src="Programmablauf.png">
+            <div id="methode">
+                <h2>Methodenbeschreibung</h2>
+                <ul>
+                    <li>
+                        <code>draw(positionBuffer, colorBuffer, indicesBuffer, textureBuffer, texture, program)</code>
+                        <br>
+                        In this method the given buffers will be loaded in the GPU-Vertex-Buffer and after that binded <br>
+                        to the Vertex- or Fragment-shader. Texture is also set. Also a perspective on frontview is set. The cube will be drawn<br>
+                        with <code>gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);</code>
+                    </li>
+                    <li>
+                        <code>initPositionBuffer()</code>
+                        In this method the position of all 24 vertices will be loaded.
+                    </li>
+                    <li>
+                        <code>initColorBuffer()</code>
+                        In this method the colors for all 6 faces will be loaded.
+                    </li>
+                    <li>
+                        <code>initIndicesBuffer()</code>
+                        In this method the indices for the position triangles will be loaded.
+                    </li>
+                    <li>
+                        <code>initTextureBuffer()</code>
+                        In this method the texture buffer is loaded.
+                    </li>
+                </ul>
+            </div>           
+        </div>
+        
+    </body>
+      
+</html>

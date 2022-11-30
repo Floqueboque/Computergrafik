@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Labor 7</title>
+
+        <script id="vertex-shader" type="x-shader/x-vertex">#version 300 es
+            in vec4 aVertexPosition;
+            in vec4 aVertexColor;
+            in vec2 aTextureCoord;
+
+            uniform mat4 uModelViewMatrix;
+            uniform mat4 uProjectionMatrix;
+
+            out lowp vec4 vColor;
+            out highp vec2 vTextureCoord;
+
+            void main() {
+                gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+                vColor = aVertexColor;
+                vTextureCoord = aTextureCoord;
+            }
+        </script>
+
+        <script id="vertex-shader-bg" type="x-shader/x-vertex">#version 300 es
+            precision mediump float;
+
+            attribute vec2 inPos;
+            varying   vec2 vertPos;
+
+            void main()
+            {
+                vertPos     = inPos;
+                gl_Position = vec4( inPos, 0.0, 1.0 );
+            }
+        </script>
+
+        <script id="fragment-shader" type="x-shader/x-vertex">#version 300 es
+            precision highp float;
+            in vec4 vColor;
+            in vec2 vTextureCoord;
+            out vec4 fragColor;
+            uniform sampler2D uTexture;
+
+            void main() {
+                fragColor = texture(uTexture, vTextureCoord) * vColor;
+            }
+        </script>
+
+        <script id="fragment-shader-bg" type="x-shader/x-vertex">#version 300 es
+            precision mediump float;
+
+            varying vec2      vertPos;
+            uniform sampler2D u_texture;
+
+            void main()
+            {
+                vec2 texCoord = vec2( vertPos.s, -vertPos.t ) * 0.5 + 0.5;
+                vec3 texColor = texture2D( u_texture, texCoord.st ).rgb;
+                gl_FragColor  = vec4( texColor.rgb, 1.0 );
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="myCanvas3D" style="background: url(background.jpg);" width="640" height="480"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3/gl-matrix.js "></script>
+        <script src="main.js"></script>
+    </body>
+      
+</html>
